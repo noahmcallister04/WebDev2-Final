@@ -1,30 +1,35 @@
-<div>
-  <h2>{{ editId ? 'Edit Budget' : 'Add Budget' }}</h2>
+<div class="form-page">
+  <h1>{{ editId ? 'Edit Budget' : 'Add Budget' }}</h1>
 
-  <p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>
+  <div class="card">
+    <p *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</p>
 
-  <form (ngSubmit)="onSubmit()">
-    <div>
-      <label>Category</label>
-      <select [(ngModel)]="budget.category" name="category" required>
-        <option value="" disabled>Select a category</option>
-        <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
-      </select>
-    </div>
+    <form (ngSubmit)="onSubmit()">
 
-    <div>
-      <label>Monthly Limit ($)</label>
-      <input type="number" [(ngModel)]="budget.monthlyLimit" name="monthlyLimit" min="1" step="0.01" required />
-    </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select [(ngModel)]="budget.category" name="category" required>
+          <option value="" disabled>Select a category</option>
+          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+      </div>
 
-    <div>
-      <label>Month</label>
-      <input type="month" [(ngModel)]="budget.month" name="month" required />
-    </div>
+      <div class="form-group">
+        <label>Monthly Limit ($)</label>
+        <input type="number" [(ngModel)]="budget.monthlyLimit" name="monthlyLimit" min="1" step="0.01" required />
+        <p class="hint">Set the max you want to spend in this category per month.</p>
+      </div>
 
-    <div>
-      <button type="submit">{{ editId ? 'Update' : 'Add' }} Budget</button>
-      <button type="button" (click)="onCancel()">Cancel</button>
-    </div>
-  </form>
+      <div class="form-group">
+        <label>Month</label>
+        <input type="month" [(ngModel)]="budget.month" name="month" required />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">{{ editId ? 'Update' : 'Add' }} Budget</button>
+        <button type="button" class="btn-secondary" (click)="onCancel()">Cancel</button>
+      </div>
+
+    </form>
+  </div>
 </div>

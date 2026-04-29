@@ -1,24 +1,32 @@
-<div>
-  <h2>Transaction History</h2>
+<div class="page">
+  <div class="page-header">
+    <h1>Transaction History</h1>
+    <button class="btn-primary" (click)="onAdd()">+ Add Transaction</button>
+  </div>
 
-  <button (click)="onAdd()">+ Add Transaction</button>
-
-  <p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>
+  <p *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</p>
 
   <!-- Filters -->
-  <div>
-    <select [(ngModel)]="filterCategory" (change)="applyFilters()" name="filterCategory">
-      <option value="">All Categories</option>
-      <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
-    </select>
-
-    <select [(ngModel)]="filterType" (change)="applyFilters()" name="filterType">
-      <option value="">All Types</option>
-      <option value="income">Income</option>
-      <option value="expense">Expense</option>
-    </select>
-
-    <input type="month" [(ngModel)]="filterMonth" (change)="applyFilters()" name="filterMonth" />
+  <div class="filters">
+    <div>
+      <label>Category</label>
+      <select [(ngModel)]="filterCategory" (change)="applyFilters()" name="filterCategory">
+        <option value="">All Categories</option>
+        <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+      </select>
+    </div>
+    <div>
+      <label>Type</label>
+      <select [(ngModel)]="filterType" (change)="applyFilters()" name="filterType">
+        <option value="">All Types</option>
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
+      </select>
+    </div>
+    <div>
+      <label>Month</label>
+      <input type="month" [(ngModel)]="filterMonth" (change)="applyFilters()" name="filterMonth" />
+    </div>
   </div>
 
   <!-- Table -->
@@ -36,13 +44,15 @@
     <tbody>
       <tr *ngFor="let t of filtered">
         <td>{{ t.date | date:'mediumDate' }}</td>
-        <td>{{ t.type }}</td>
+        <td><span class="type-badge" [class]="t.type">{{ t.type }}</span></td>
         <td>{{ t.category }}</td>
-        <td>${{ t.amount.toFixed(2) }}</td>
+        <td class="amount" [class]="t.type">
+          {{ t.type === 'income' ? '+' : '-' }}${{ t.amount.toFixed(2) }}
+        </td>
         <td>{{ t.note || '—' }}</td>
         <td>
-          <button (click)="onEdit(t._id!)">Edit</button>
-          <button (click)="onDelete(t._id!)">Delete</button>
+          <button class="action-btn" (click)="onEdit(t._id!)">Edit</button>
+          <button class="action-btn delete" (click)="onDelete(t._id!)">Delete</button>
         </td>
       </tr>
     </tbody>

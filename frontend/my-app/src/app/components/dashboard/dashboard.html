@@ -1,1 +1,42 @@
-<p>dashboard works!</p>
+<div class="page">
+  <h1>{{ currentMonth }} Overview</h1>
+
+  <p *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</p>
+
+  <!-- Summary Cards -->
+  <div class="summary-cards">
+    <div class="card income">
+      <div class="label">Total Income</div>
+      <div class="value">${{ totalIncome.toFixed(2) }}</div>
+    </div>
+    <div class="card expenses">
+      <div class="label">Total Expenses</div>
+      <div class="value">${{ totalExpenses.toFixed(2) }}</div>
+    </div>
+    <div class="card net">
+      <div class="label">Net Balance</div>
+      <div class="value">${{ netBalance.toFixed(2) }}</div>
+    </div>
+  </div>
+
+  <!-- Category Budgets -->
+  <div class="section-title">Spending by Category</div>
+
+  <div class="budget-grid" *ngIf="summaries.length > 0; else noData">
+    <div class="budget-item" *ngFor="let s of summaries">
+      <div class="top">
+        <span class="cat-name">{{ s.category }}</span>
+        <span class="amounts">${{ s.spent.toFixed(2) }} / ${{ s.monthlyLimit.toFixed(2) }}</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" [class]="getProgressClass(s)" [style.width.%]="getProgressPercent(s)"></div>
+      </div>
+      <small *ngIf="isOver(s)" class="status over">⚠ Over budget</small>
+      <small *ngIf="isNear(s)" class="status warning">⚡ Near limit</small>
+    </div>
+  </div>
+
+  <ng-template #noData>
+    <p>No budget data found. Add a budget to get started.</p>
+  </ng-template>
+</div>

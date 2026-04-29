@@ -1,9 +1,10 @@
-<div>
-  <h2>Budget Management</h2>
+<div class="page">
+  <div class="page-header">
+    <h1>Budget Management</h1>
+    <button class="btn-primary" (click)="onAdd()">+ Add Budget</button>
+  </div>
 
-  <button (click)="onAdd()">+ Add Budget</button>
-
-  <p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>
+  <p *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</p>
 
   <table *ngIf="budgets.length > 0; else noData">
     <thead>
@@ -17,11 +18,11 @@
     <tbody>
       <tr *ngFor="let b of budgets">
         <td>{{ b.category }}</td>
-        <td>${{ b.monthlyLimit.toFixed(2) }}</td>
+        <td class="limit">${{ b.monthlyLimit.toFixed(2) }}</td>
         <td>{{ b.month }}</td>
         <td>
-          <button (click)="onEdit(b._id!)">Edit</button>
-          <button (click)="onDelete(b._id!)">Delete</button>
+          <button class="action-btn" (click)="onEdit(b._id!)">Edit</button>
+          <button class="action-btn delete" (click)="onDelete(b._id!)">Delete</button>
         </td>
       </tr>
     </tbody>
