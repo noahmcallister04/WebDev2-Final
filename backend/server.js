@@ -9,6 +9,7 @@ app.use(express.json());
 
 app.use('/api/transactions', require('./routes/transactions'));
 app.use('/api/budgets', require('./routes/budgets'));
+app.use('/api/summary', require('./routes/summary'));
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
@@ -16,5 +17,3 @@ mongoose.connect(process.env.MONGO_URI)
     app.listen(process.env.PORT || 3000, () => console.log(`Server on port ${process.env.PORT || 3000}`));
   })
   .catch(err => console.error(err));
-
-  
