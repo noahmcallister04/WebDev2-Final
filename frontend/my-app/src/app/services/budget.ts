@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Budget {
@@ -9,12 +9,20 @@ export interface Budget {
   month: string; // YYYY-MM
 }
 
-export interface BudgetSummary {
+export interface BudgetSummaryCategory {
   category: string;
   monthlyLimit: number;
   spent: number;
   remaining: number;
+  overBudget: boolean;
+}
+
+export interface SummaryResponse {
   month: string;
+  totalIncome: number;
+  totalExpenses: number;
+  netBalance: number;
+  categories: BudgetSummaryCategory[];
 }
 
 @Injectable({
@@ -46,7 +54,8 @@ export class BudgetService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  getSummary(): Observable<BudgetSummary[]> {
-    return this.http.get<BudgetSummary[]>(this.summaryUrl);
+  getSummary(month: string): Observable<SummaryResponse> {
+    const params = new HttpParams().set('month', month);
+    return this.http.get<SummaryResponse>(this.summaryUrl, { params });
   }
 }

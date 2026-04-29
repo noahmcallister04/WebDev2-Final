@@ -42,12 +42,12 @@ export class BudgetForm implements OnInit {
     if (this.editId) {
       this.budgetService.update(this.editId, this.budget).subscribe({
         next: () => this.router.navigate(['/budgets']),
-        error: () => (this.errorMessage = 'Failed to update budget.'),
+        error: (err) => (this.errorMessage = err.error?.error ?? 'Failed to update budget.'),
       });
     } else {
       this.budgetService.create(this.budget).subscribe({
         next: () => this.router.navigate(['/budgets']),
-        error: () => (this.errorMessage = 'Failed to create budget.'),
+        error: (err) => (this.errorMessage = err.error?.error ?? 'Failed to create budget.'),
       });
     }
   }

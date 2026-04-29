@@ -13,7 +13,6 @@ import { TransactionService, Transaction } from '../../services/transaction';
 })
 export class TransactionList implements OnInit, OnDestroy {
   transactions: Transaction[] = [];
-  filtered: Transaction[] = [];
 
   filterCategory = '';
   filterType = '';
@@ -31,22 +30,19 @@ export class TransactionList implements OnInit, OnDestroy {
   }
 
   loadTransactions(): void {
-    this.sub = this.transactionService.getAll().subscribe({
-      next: (data) => {
-        this.transactions = data;
-        this.applyFilters();
-      },
-      error: () => (this.errorMessage = 'Failed to load transactions.'),
+    this.sub?.unsubscribe();
+    this.sub = this.transactionService.getAll({
+      month: this.filterMonth || undefined,
+      category: this.filterCategory || undefined,
+      type: this.filterType || undefined,
+    }).subscribe({
+      next: (data) => (this.transactions = data),
+      error: () => (this.errorMessage = 'Failed to load transactions. Is the backend running?'),
     });
   }
 
   applyFilters(): void {
-    this.filtered = this.transactions.filter((t) => {
-      const matchCategory = this.filterCategory ? t.category === this.filterCategory : true;
-      const matchType = this.filterType ? t.type === this.filterType : true;
-      const matchMonth = this.filterMonth ? t.month === this.filterMonth : true;
-      return matchCategory && matchType && matchMonth;
-    });
+    this.loadTransactions();
   }
 
   onEdit(id: string): void {

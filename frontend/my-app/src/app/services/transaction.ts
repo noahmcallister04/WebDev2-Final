@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Transaction {
@@ -9,7 +9,13 @@ export interface Transaction {
   category: string;
   date: string;
   note?: string;
-  month: string; // YYYY-MM
+  month?: string; // YYYY-MM — derived by the backend, read-only on the frontend
+}
+
+export interface TransactionFilters {
+  month?: string;
+  category?: string;
+  type?: string;
 }
 
 @Injectable({
@@ -20,19 +26,23 @@ export class TransactionService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<Transaction[]> {
-    return this.http.get<Transaction[]>(this.apiUrl);
+  getAll(filters?: TransactionFilters): Observable<Transaction[]> {
+    let params = new HttpParams();
+    if (filters?.month) params = params.set('month', filters.month);
+    if (filters?.category) params = params.set('category', filters.category);
+    if (filters?.type) params = params.set('type', filters.type);
+    return this.http.get<Transaction[]>(this.apiUrl, { params });
   }
 
   getById(id: string): Observable<Transaction> {
     return this.http.get<Transaction>(`${this.apiUrl}/${id}`);
   }
 
-  create(transaction: Transaction): Observable<Transaction> {
+  create(transaction: Omit<Transaction, '_id' | 'month'>): Observable<Transaction> {
     return this.http.post<Transaction>(this.apiUrl, transaction);
   }
 
-  update(id: string, transaction: Transaction): Observable<Transaction> {
+  update(id: string, transaction: Omit<Transaction, '_id' | 'month'>): Observable<Transaction> {
     return this.http.put<Transaction>(`${this.apiUrl}/${id}`, transaction);
   }
 

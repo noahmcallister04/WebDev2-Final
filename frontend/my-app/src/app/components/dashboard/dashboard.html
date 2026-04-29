@@ -22,21 +22,21 @@
   <!-- Category Budgets -->
   <div class="section-title">Spending by Category</div>
 
-  <div class="budget-grid" *ngIf="summaries.length > 0; else noData">
-    <div class="budget-item" *ngFor="let s of summaries">
+  <div class="budget-grid" *ngIf="categories.length > 0; else noData">
+    <div class="budget-item" *ngFor="let cat of categories">
       <div class="top">
-        <span class="cat-name">{{ s.category }}</span>
-        <span class="amounts">${{ s.spent.toFixed(2) }} / ${{ s.monthlyLimit.toFixed(2) }}</span>
+        <span class="cat-name">{{ cat.category }}</span>
+        <span class="amounts">${{ cat.spent.toFixed(2) }} / ${{ cat.monthlyLimit.toFixed(2) }}</span>
       </div>
       <div class="progress-bar">
-        <div class="progress-fill" [class]="getProgressClass(s)" [style.width.%]="getProgressPercent(s)"></div>
+        <div class="progress-fill" [class]="getProgressClass(cat)" [style.width.%]="getProgressPercent(cat)"></div>
       </div>
-      <small *ngIf="isOver(s)" class="status over">⚠ Over budget</small>
-      <small *ngIf="isNear(s)" class="status warning">⚡ Near limit</small>
+      <small *ngIf="cat.overBudget" class="status over">⚠ Over budget</small>
+      <small *ngIf="isNear(cat)" class="status warning">⚡ Near limit</small>
     </div>
   </div>
 
   <ng-template #noData>
-    <p>No budget data found. Add a budget to get started.</p>
+    <p *ngIf="!errorMessage">No budget data for this month. Add budgets to get started.</p>
   </ng-template>
 </div>

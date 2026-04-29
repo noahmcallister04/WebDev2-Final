@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { BudgetService, BudgetSummary } from '../../services/budget';
-import { TransactionService, Transaction } from '../../services/transaction';
+import { BudgetService, BudgetSummaryCategory, SummaryResponse } from '../../services/budget';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,70 +10,52 @@ import { TransactionService, Transaction } from '../../services/transaction';
   styleUrl: './dashboard.css',
 })
 export class Dashboard implements OnInit, OnDestroy {
-  summaries: BudgetSummary[] = [];
-  transactions: Transaction[] = [];
+  summary: SummaryResponse | null = null;
   currentMonth = new Date().toISOString().slice(0, 7);
   errorMessage = '';
-  private subs: Subscription[] = [];
+  private sub!: Subscription;
+
+  get categories(): BudgetSummaryCategory[] {
+    return this.summary?.categories ?? [];
+  }
 
   get totalIncome(): number {
-    return this.transactions
-      .filter(t => t.type === 'income' && t.month === this.currentMonth)
-      .reduce((sum, t) => sum + t.amount, 0);
+    return this.summary?.totalIncome ?? 0;
   }
 
   get totalExpenses(): number {
-    return this.transactions
-      .filter(t => t.type === 'expense' && t.month === this.currentMonth)
-      .reduce((sum, t) => sum + t.amount, 0);
+    return this.summary?.totalExpenses ?? 0;
   }
 
   get netBalance(): number {
-    return this.totalIncome - this.totalExpenses;
+    return this.summary?.netBalance ?? 0;
   }
 
-  getProgressPercent(summary: BudgetSummary): number {
-    if (summary.monthlyLimit === 0) return 0;
-    return Math.min((summary.spent / summary.monthlyLimit) * 100, 100);
+  getProgressPercent(cat: BudgetSummaryCategory): number {
+    if (cat.monthlyLimit === 0) return 0;
+    return Math.min((cat.spent / cat.monthlyLimit) * 100, 100);
   }
 
-  getProgressClass(summary: BudgetSummary): string {
-    const pct = this.getProgressPercent(summary);
-    if (pct >= 100) return 'over';
-    if (pct >= 80) return 'warning';
+  getProgressClass(cat: BudgetSummaryCategory): string {
+    if (cat.overBudget) return 'over';
+    if (this.getProgressPercent(cat) >= 80) return 'warning';
     return '';
   }
 
-  isOver(summary: BudgetSummary): boolean {
-    return summary.spent >= summary.monthlyLimit;
+  isNear(cat: BudgetSummaryCategory): boolean {
+    return !cat.overBudget && this.getProgressPercent(cat) >= 80;
   }
 
-  isNear(summary: BudgetSummary): boolean {
-    const pct = this.getProgressPercent(summary);
-    return pct >= 80 && pct < 100;
-  }
-
-  constructor(
-    private budgetService: BudgetService,
-    private transactionService: TransactionService
-  ) {}
+  constructor(private budgetService: BudgetService) {}
 
   ngOnInit(): void {
-    this.subs.push(
-      this.budgetService.getSummary().subscribe({
-        next: (data) => (this.summaries = data),
-        error: () => (this.errorMessage = 'Failed to load budget summary.'),
-      })
-    );
-    this.subs.push(
-      this.transactionService.getAll().subscribe({
-        next: (data) => (this.transactions = data),
-        error: () => (this.errorMessage = 'Failed to load transactions.'),
-      })
-    );
+    this.sub = this.budgetService.getSummary(this.currentMonth).subscribe({
+      next: (data) => (this.summary = data),
+      error: () => (this.errorMessage = 'Failed to load dashboard. Is the backend running?'),
+    });
   }
 
   ngOnDestroy(): void {
-    this.subs.forEach(s => s.unsubscribe());
+    this.sub?.unsubscribe();
   }
 }
