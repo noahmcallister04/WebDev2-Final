@@ -1,0 +1,47 @@
+<div class="form-page">
+  <h1>{{ editId ? 'Edit Transaction' : 'Add Transaction' }}</h1>
+
+  <div class="card">
+    <p *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</p>
+
+    <form (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <label>Type</label>
+        <select [(ngModel)]="transaction.type" name="type" required>
+          <option value="expense">Expense</option>
+          <option value="income">Income</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Amount ($)</label>
+        <input type="number" [(ngModel)]="transaction.amount" name="amount" min="0.01" step="0.01" required />
+      </div>
+
+      <div class="form-group">
+        <label>Category</label>
+        <select [(ngModel)]="transaction.category" name="category" required>
+          <option value="" disabled>Select a category</option>
+          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" [(ngModel)]="transaction.date" name="date" (change)="onDateChange()" required />
+      </div>
+
+      <div class="form-group">
+        <label>Note <span style="font-weight:400; color:#94a3b8;">(optional)</span></label>
+        <input type="text" [(ngModel)]="transaction.note" name="note" placeholder="e.g. Chipotle with friends" />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">{{ editId ? 'Update' : 'Add' }} Transaction</button>
+        <button type="button" class="btn-secondary" (click)="onCancel()">Cancel</button>
+      </div>
+
+    </form>
+  </div>
+</div>

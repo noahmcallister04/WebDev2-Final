@@ -1,0 +1,56 @@
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.card .label {
+  font-size: 0.78rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.card .value { font-size: 1.7rem; font-weight: 700; }
+.card.income .value { color: #16a34a; }
+.card.expenses .value { color: #dc2626; }
+.card.net .value { color: #1d4ed8; }
+
+.section-title { font-size: 1rem; font-weight: 600; margin-bottom: 14px; color: #334155; }
+
+.budget-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+.budget-item {
+  background: white;
+  border-radius: 10px;
+  padding: 16px 18px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+}
+
+.budget-item .top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.cat-name { font-weight: 600; font-size: 0.92rem; }
+.amounts { font-size: 0.8rem; color: #64748b; }
+
+.progress-bar { background: #e2e8f0; border-radius: 99px; height: 8px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 99px; background: #3b82f6; transition: width 0.3s ease; }
+.progress-fill.warning { background: #f59e0b; }
+.progress-fill.over { background: #ef4444; }
+
+.status { font-size: 0.75rem; margin-top: 4px; display: block; }
+.status.over { color: #dc2626; }
+.status.warning { color: #b45309; }

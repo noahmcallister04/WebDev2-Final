@@ -1,0 +1,64 @@
+<div class="page">
+  <div class="page-header">
+    <h1>Transaction History</h1>
+    <button class="btn-primary" (click)="onAdd()">+ Add Transaction</button>
+  </div>
+
+  <p *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</p>
+
+  <!-- Filters -->
+  <div class="filters">
+    <div>
+      <label>Category</label>
+      <select [(ngModel)]="filterCategory" (change)="applyFilters()" name="filterCategory">
+        <option value="">All Categories</option>
+        <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+      </select>
+    </div>
+    <div>
+      <label>Type</label>
+      <select [(ngModel)]="filterType" (change)="applyFilters()" name="filterType">
+        <option value="">All Types</option>
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
+      </select>
+    </div>
+    <div>
+      <label>Month</label>
+      <input type="month" [(ngModel)]="filterMonth" (change)="applyFilters()" name="filterMonth" />
+    </div>
+  </div>
+
+  <!-- Table -->
+  <table *ngIf="filtered.length > 0; else noData">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Type</th>
+        <th>Category</th>
+        <th>Amount</th>
+        <th>Note</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let t of filtered">
+        <td>{{ t.date | date:'mediumDate' }}</td>
+        <td><span class="type-badge" [class]="t.type">{{ t.type }}</span></td>
+        <td>{{ t.category }}</td>
+        <td class="amount" [class]="t.type">
+          {{ t.type === 'income' ? '+' : '-' }}${{ t.amount.toFixed(2) }}
+        </td>
+        <td>{{ t.note || '—' }}</td>
+        <td>
+          <button class="action-btn" (click)="onEdit(t._id!)">Edit</button>
+          <button class="action-btn delete" (click)="onDelete(t._id!)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #noData>
+    <p>No transactions found.</p>
+  </ng-template>
+</div>
