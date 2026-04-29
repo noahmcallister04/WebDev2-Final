@@ -1,1 +1,30 @@
-<p>budget-form works!</p>
+<div>
+  <h2>{{ editId ? 'Edit Budget' : 'Add Budget' }}</h2>
+
+  <p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>
+
+  <form (ngSubmit)="onSubmit()">
+    <div>
+      <label>Category</label>
+      <select [(ngModel)]="budget.category" name="category" required>
+        <option value="" disabled>Select a category</option>
+        <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Monthly Limit ($)</label>
+      <input type="number" [(ngModel)]="budget.monthlyLimit" name="monthlyLimit" min="1" step="0.01" required />
+    </div>
+
+    <div>
+      <label>Month</label>
+      <input type="month" [(ngModel)]="budget.month" name="month" required />
+    </div>
+
+    <div>
+      <button type="submit">{{ editId ? 'Update' : 'Add' }} Budget</button>
+      <button type="button" (click)="onCancel()">Cancel</button>
+    </div>
+  </form>
+</div>

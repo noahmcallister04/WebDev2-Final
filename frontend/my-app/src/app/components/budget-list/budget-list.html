@@ -1,1 +1,33 @@
-<p>budget-list works!</p>
+<div>
+  <h2>Budget Management</h2>
+
+  <button (click)="onAdd()">+ Add Budget</button>
+
+  <p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>
+
+  <table *ngIf="budgets.length > 0; else noData">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Monthly Limit</th>
+        <th>Month</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let b of budgets">
+        <td>{{ b.category }}</td>
+        <td>${{ b.monthlyLimit.toFixed(2) }}</td>
+        <td>{{ b.month }}</td>
+        <td>
+          <button (click)="onEdit(b._id!)">Edit</button>
+          <button (click)="onDelete(b._id!)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #noData>
+    <p>No budgets found.</p>
+  </ng-template>
+</div>

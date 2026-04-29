@@ -1,1 +1,43 @@
-<p>transaction-form works!</p>
+<div>
+  <h2>{{ editId ? 'Edit Transaction' : 'Add Transaction' }}</h2>
+
+  <p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>
+
+  <form (ngSubmit)="onSubmit()">
+    <div>
+      <label>Type</label>
+      <select [(ngModel)]="transaction.type" name="type" required>
+        <option value="expense">Expense</option>
+        <option value="income">Income</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Amount</label>
+      <input type="number" [(ngModel)]="transaction.amount" name="amount" min="0.01" step="0.01" required />
+    </div>
+
+    <div>
+      <label>Category</label>
+      <select [(ngModel)]="transaction.category" name="category" required>
+        <option value="" disabled>Select a category</option>
+        <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Date</label>
+      <input type="date" [(ngModel)]="transaction.date" name="date" (change)="onDateChange()" required />
+    </div>
+
+    <div>
+      <label>Note (optional)</label>
+      <input type="text" [(ngModel)]="transaction.note" name="note" />
+    </div>
+
+    <div>
+      <button type="submit">{{ editId ? 'Update' : 'Add' }} Transaction</button>
+      <button type="button" (click)="onCancel()">Cancel</button>
+    </div>
+  </form>
+</div>
