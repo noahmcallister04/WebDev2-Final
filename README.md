@@ -44,7 +44,9 @@ A full-stack web application that helps college students track income and expens
 
 
 ## Deployment
-Frontend Link: https://my-app-ten-dun-41.vercel.app/dashboard
+
+- **Frontend:** https://my-app-ten-dun-41.vercel.app
+- **Backend:** https://webdev2-final.onrender.com
 
 ## Demo Video
 
