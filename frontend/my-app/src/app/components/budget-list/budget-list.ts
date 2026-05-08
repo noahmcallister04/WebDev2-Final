@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -16,16 +16,17 @@ export class BudgetList implements OnInit, OnDestroy {
   errorMessage = '';
   private sub!: Subscription;
 
-  constructor(private budgetService: BudgetService, private router: Router) {}
+  constructor(private budgetService: BudgetService, private router: Router, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadBudgets();
   }
 
   loadBudgets(): void {
+    this.sub?.unsubscribe();
     this.sub = this.budgetService.getAll().subscribe({
-      next: (data) => (this.budgets = data),
-      error: () => (this.errorMessage = 'Failed to load budgets.'),
+      next: (data) => { this.budgets = data; this.cdr.markForCheck(); },
+      error: () => { this.errorMessage = 'Failed to load budgets.'; this.cdr.markForCheck(); },
     });
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -25,15 +25,16 @@ export class BudgetForm implements OnInit {
   constructor(
     private budgetService: BudgetService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.editId = this.route.snapshot.paramMap.get('id');
     if (this.editId) {
       this.budgetService.getById(this.editId).subscribe({
-        next: (data) => (this.budget = data),
-        error: () => (this.errorMessage = 'Failed to load budget.'),
+        next: (data) => { this.budget = data; this.cdr.markForCheck(); },
+        error: () => { this.errorMessage = 'Failed to load budget.'; this.cdr.markForCheck(); },
       });
     }
   }

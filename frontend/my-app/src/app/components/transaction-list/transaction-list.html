@@ -30,7 +30,7 @@
   </div>
 
   <!-- Table -->
-  <table *ngIf="filtered.length > 0; else noData">
+  <table *ngIf="transactions.length > 0; else noData">
     <thead>
       <tr>
         <th>Date</th>
@@ -42,7 +42,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let t of filtered">
+      <tr *ngFor="let t of transactions">
         <td>{{ t.date | date:'mediumDate' }}</td>
         <td><span class="type-badge" [class]="t.type">{{ t.type }}</span></td>
         <td>{{ t.category }}</td>

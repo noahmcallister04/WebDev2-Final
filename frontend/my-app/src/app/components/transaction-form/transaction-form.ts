@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -35,7 +35,8 @@ export class TransactionForm implements OnInit {
   constructor(
     private transactionService: TransactionService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -50,8 +51,9 @@ export class TransactionForm implements OnInit {
             date: new Date(data.date).toISOString().split('T')[0],
             note: data.note ?? '',
           };
+          this.cdr.markForCheck();
         },
-        error: () => (this.errorMessage = 'Failed to load transaction.'),
+        error: () => { this.errorMessage = 'Failed to load transaction.'; this.cdr.markForCheck(); },
       });
     }
   }

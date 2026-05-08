@@ -1,5 +1,9 @@
 <div class="page">
-  <h1>{{ currentMonth }} Overview</h1>
+  <div class="month-nav">
+    <button class="nav-btn" (click)="prevMonth()">&#8592;</button>
+    <h1>{{ displayMonth }}</h1>
+    <button class="nav-btn" (click)="nextMonth()" [disabled]="isCurrentMonth">&#8594;</button>
+  </div>
 
   <p *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</p>
 

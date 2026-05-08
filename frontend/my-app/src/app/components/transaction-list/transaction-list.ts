@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -23,7 +23,7 @@ export class TransactionList implements OnInit, OnDestroy {
   errorMessage = '';
   private sub!: Subscription;
 
-  constructor(private transactionService: TransactionService, private router: Router) {}
+  constructor(private transactionService: TransactionService, private router: Router, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadTransactions();
@@ -36,8 +36,8 @@ export class TransactionList implements OnInit, OnDestroy {
       category: this.filterCategory || undefined,
       type: this.filterType || undefined,
     }).subscribe({
-      next: (data) => (this.transactions = data),
-      error: () => (this.errorMessage = 'Failed to load transactions. Is the backend running?'),
+      next: (data) => { this.transactions = data; this.cdr.markForCheck(); },
+      error: () => { this.errorMessage = 'Failed to load transactions. Is the backend running?'; this.cdr.markForCheck(); },
     });
   }
 
