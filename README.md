@@ -12,34 +12,16 @@ A full-stack web application that helps college students track income and expens
 | Aditya Ramakrishnan | Backend (Express API, controllers, MongoDB) |
 | Andrew Danchus | Database (Mongoose models, seed data, aggregate queries) |
 
----
 
-## Tech Stack
+## Frontend:
+cd into /frontend/my-app
+npm install
+npm start
 
-- **Frontend:** Angular 21 (standalone components, zoneless change detection)
-- **Backend:** Node.js, Express 5
-- **Database:** MongoDB Atlas via Mongoose
-- **Styling:** Plain CSS
-
----
-
-## Features
-
-- Add, edit, and delete income/expense transactions
-- Filter transactions by category, type, and month
-- Set monthly budget limits per category
-- Dashboard with income/expense summary and per-category progress bars
-- Navigate the dashboard month-by-month with previous/next controls
-
----
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js v18+
-- npm
-- A MongoDB Atlas account (or local MongoDB instance)
+## Backend:
+cd into Backend directory
+npm install
+npm run dev
 
 
 
@@ -49,5 +31,8 @@ A full-stack web application that helps college students track income and expens
 - **Backend:** https://webdev2-final.onrender.com
 
 ## Demo Video
+https://youtu.be/_gg8kQUGymk
 
-[Add video link here]
+## Presentation Video
+https://youtu.be/j_AkQdpdh9Q
+
