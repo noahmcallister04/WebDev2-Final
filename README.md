@@ -43,27 +43,8 @@ A full-stack web application that helps college students track income and expens
 
 
 
-### 1. Install and run the backend
-
-```bash
-cd backend
-npm install
-npm run dev
-```
-
-The API will be available at `http://localhost:3000`.
-
-### 2. Install and run the frontend
-
-Open a second terminal:
-
-```bash
-cd frontend/my-app
-npm install
-npm start
-```
-
-The app will be available at `http://localhost:4200`.
+## Deployment
+Frontend Link: https://my-app-ten-dun-41.vercel.app/dashboard
 
 ## Demo Video
 

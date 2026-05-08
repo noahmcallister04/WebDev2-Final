@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface Budget {
   _id?: string;
@@ -29,8 +30,8 @@ export interface SummaryResponse {
   providedIn: 'root',
 })
 export class BudgetService {
-  private apiUrl = 'http://localhost:3000/api/budgets';
-  private summaryUrl = 'http://localhost:3000/api/summary';
+  private apiUrl = `${environment.apiUrl}/budgets`;
+  private summaryUrl = `${environment.apiUrl}/summary`;
 
   constructor(private http: HttpClient) {}
 
